@@ -14,7 +14,7 @@
 
     <Grid>
 
-        
+
 
 
         <Grid.RowDefinitions>
@@ -131,10 +131,10 @@
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right"/>
                     <TextBlock Text="Изменить никнейм"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Top"
                         FontWeight="Medium"
                         Foreground="Gray"
-                        Margin="10,0,848,0" Height="24"/>
+                        Margin="10,8,848,0" Height="24"/>
 
                 </Grid>
             </Border>
@@ -174,7 +174,7 @@
                 </TextBox>
 
 
-                <Button  x:Name="SubmitButton" Click="SubmitButton_Click"   RenderOptions.BitmapScalingMode="Fant" Background="#FF484848" Margin="51,17,10,17" Grid.Column="1" BorderThickness="0">
+                <Button   x:Name="SubmitButton" Click="SubmitButton_Click"   RenderOptions.BitmapScalingMode="Fant" Background="#FF484848" Margin="51,17,10,17" Grid.Column="1" BorderThickness="0">
                     <Image Source="/Icons/send.png"  />
 
                 </Button>
@@ -183,9 +183,10 @@
                     <Image Source="/Icons/cahnge1.png" Height="25" Width="40" />
 
                 </Button>
-                
+
 
             </Grid>
         </Grid>
     </Grid>
+
 </Window>
