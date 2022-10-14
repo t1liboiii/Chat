@@ -4,20 +4,188 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client"
-             mc:Ignorable="d" 
-             d:DesignHeight="510" Width="1080">
+            mc:Ignorable="d"
+        Height="650" Width="1200"
+        Background="#36393F"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip">
+
+
     <Grid>
+
+        
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="149*"/>
-            <ColumnDefinition Width="759*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Height="0" Margin="282,166,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="31" Grid.Column="1"/>
-        <Button x:Name="SubmitButton" Content="Отправить" HorizontalAlignment="Left" Margin="453,357,0,0" VerticalAlignment="Top" Width="120" Height="56" Click="SubmitButton_Click" Grid.Column="1"/>
-        <TextBox x:Name="InputField" HorizontalAlignment="Left" Height="56" Margin="10,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="614" Grid.ColumnSpan="2"/>
-        <Button x:Name="Disconnect" Content="Отключиться" HorizontalAlignment="Left" Margin="9,418,0,0" VerticalAlignment="Top" Width="111" Height="45" Click="Disconnect_Click" IsEnabled="False"/>
-        <TextBox x:Name="Nickname" HorizontalAlignment="Left" Height="23" Margin="578,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="191" Grid.Column="1"/>
-        <Button x:Name="SetNickName" Content="Изменить никнейм" HorizontalAlignment="Left" Margin="578,385,0,0" VerticalAlignment="Top" Width="191" Height="28" Click="SetNickname_Click" Grid.Column="1"/>
-        <ListBox x:Name="ClientList" HorizontalAlignment="Left" Height="344" Margin="578,10,0,0" VerticalAlignment="Top" Width="191" Grid.Column="1"/>
-        <ListBox x:Name="MessageBox" HorizontalAlignment="Left" Height="344" Margin="10,10,0,0" VerticalAlignment="Top" Width="739" Grid.ColumnSpan="2"/>
+
+        <Border Grid.ColumnSpan="2"
+                Background="#252525"
+                >
+            <Grid HorizontalAlignment="Stretch">
+                <Label Content="Chat"
+                       Foreground="Gray"
+                       FontWeight="SemiBold"/>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Width="20" Height="20"
+                            Content="🗕"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="Gray"
+                            FontWeight="Bold"
+                            Margin="0,0,0,5"
+                           />
+                    <Button Width="20" Height="20"
+                            Content="□"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="Gray"
+                            FontWeight="Bold"
+                           />
+
+                    <Button Width="20" Height="20"
+                            Content="⨯"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="Gray"
+                            FontWeight="Bold"
+                            
+                            Click="Button_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Background="#2F3136"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Пользователи"
+                   VerticalAlignment="Center"
+                   FontWeight="Medium"
+                   Foreground="Gray"
+                   Margin="8,0,0,0"/>
+
+            <ListView x:Name="ClientList" ItemsSource="{Binding Contacts}"
+                      SelectedItem="{Binding SelectedContact}"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      Foreground="Wheat"
+                      Grid.Row="1"
+                     />
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        Background="#292b2F">
+                <Border CornerRadius="25"
+                        Width="30" Height="30"
+                        Background="#3bff6f"
+                        Margin="18,0,0,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <Label Content="Username"
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           Margin="0, -5, 0, -5"/>
+                    <Label Content ="Custom Status"
+                           Foreground="Gray"
+                           FontWeight="SemiBold"
+                           FontSize="10"
+                           Margin="0, -8, 0, -5"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <Border BorderBrush="#2f3136"
+                    BorderThickness="0,0,0,2">
+                <Grid HorizontalAlignment="Stretch"
+                      Margin="8">
+
+                    <TextBox  x:Name="Nickname" 
+                           Foreground="White"
+                            
+                           FontWeight="Bold"
+                                Background="#FF484848"
+                           Margin="154,0,5,0"
+                           VerticalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"/>
+                    <TextBlock Text="Изменить никнейм"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        Foreground="Gray"
+                        Margin="10,0,848,0" Height="24"/>
+
+                </Grid>
+            </Border>
+
+            <ListView x:Name="MessageBox" ItemsSource="{Binding SelectedContact.Messages}"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      Foreground="White"
+                       
+                      Margin="8,0,0,0"
+                      Grid.Row="1"/>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                   
+                    x:Name="InputField"
+                   
+                    
+                     Grid.Row="1" Foreground="White"
+                         Height="50"
+                         Margin="5, 0, 5, 0"
+                         
+                         Grid.ColumnSpan="2"
+                         Background="#FF484848" RenderTransformOrigin="0.5,0.5">
+
+
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+
+
+                <Button  x:Name="SubmitButton" Click="SubmitButton_Click"   RenderOptions.BitmapScalingMode="Fant" Background="#FF484848" Margin="51,17,10,17" Grid.Column="1" BorderThickness="0">
+                    <Image Source="/Icons/send.png"  />
+
+                </Button>
+
+                <Button  x:Name="SetNickName" Click="SetNickname_Click" RenderOptions.BitmapScalingMode="Fant" BorderThickness="0" Background="#FF484848" Margin="0,17,51,17" Grid.Column="1" >
+                    <Image Source="/Icons/cahnge1.png" Height="25" Width="40" />
+
+                </Button>
+                
+
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
