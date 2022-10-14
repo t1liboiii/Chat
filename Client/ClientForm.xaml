@@ -134,7 +134,7 @@
                         VerticalAlignment="Top"
                         FontWeight="Medium"
                         Foreground="Gray"
-                        Margin="10,8,848,0" Height="24"/>
+                        Margin="10,6,848,0" Height="24"/>
 
                 </Grid>
             </Border>
@@ -175,11 +175,100 @@
 
 
                 <Button   x:Name="SubmitButton" Click="SubmitButton_Click"   RenderOptions.BitmapScalingMode="Fant" Background="#FF484848" Margin="51,17,10,17" Grid.Column="1" BorderThickness="0">
+                    <Button.Style>
+                        <Style  TargetType="{x:Type Button}">
+                            
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                                            <ContentPresenter x:Name="contentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsDefaulted" Value="true">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <!--<Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />-->
+                                                
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="true">
+                                                
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                             
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
                     <Image Source="/Icons/send.png"  />
 
                 </Button>
 
-                <Button  x:Name="SetNickName" Click="SetNickname_Click" RenderOptions.BitmapScalingMode="Fant" BorderThickness="0" Background="#FF484848" Margin="0,17,51,17" Grid.Column="1" >
+                <Button 
+                    x:Name="SetNickName" Click="SetNickname_Click" RenderOptions.BitmapScalingMode="Fant" BorderThickness="0" Background="#FF484848" Margin="0,17,51,17" Grid.Column="1" >
+                    <Button.Style>
+                        <Style  TargetType="{x:Type Button}">
+
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                                            <ContentPresenter x:Name="contentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsDefaulted" Value="true">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <!--<Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />-->
+
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="true">
+
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
                     <Image Source="/Icons/cahnge1.png" Height="25" Width="40" />
 
                 </Button>
