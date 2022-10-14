@@ -125,7 +125,7 @@
                             
                            FontWeight="Bold"
                                 Background="#FF484848"
-                           Margin="154,0,5,0"
+                           Margin="256,0,5,0"
                            VerticalAlignment="Center"/>
 
                     <StackPanel Orientation="Horizontal"
@@ -134,7 +134,7 @@
                         VerticalAlignment="Top"
                         FontWeight="Medium"
                         Foreground="Gray"
-                        Margin="10,6,848,0" Height="24"/>
+                        Margin="10,6,728,0" Height="24"/>
 
                 </Grid>
             </Border>
