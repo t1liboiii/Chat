@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace Client
 {
     /// <summary>
@@ -20,16 +21,29 @@ namespace Client
     /// </summary>
     public partial class ClientForm : Window
     {
+        
+        
+        public static ClientForm Window;
         private Client _client;
 
         public ClientForm(Client client)
         {
             InitializeComponent();
+            Window = this;
             this.Height = 510.0f;
             this.Width = 1080.0f;
 
             _client = client;
         }
+        
+        private void Drag(object sender, RoutedEventArgs e)
+        {
+            if(Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                ClientForm.Window.DragMove();
+            }
+        }
+       
 
         public void UpdateChatWindow(string message)
         {
@@ -82,9 +96,41 @@ namespace Client
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Environment.Exit(0);
+
         }
 
+        
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void InputField_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (Keyboard.IsKeyDown(Key.Enter) || Keyboard.IsKeyDown(Key.Enter))
+                {
+                    _client.TCPSendMessage(InputField.Text);
+                    InputField.Clear();
+                }
+               
+            }
+        }
+
+        private void Nickname_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (Keyboard.IsKeyDown(Key.Enter) || Keyboard.IsKeyDown(Key.Enter))
+                {
+                    _client.SetNickname(Nickname.Text);
+                    Nickname.Clear();
+                }
+
+            }
+        }
     }
 }

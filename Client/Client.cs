@@ -15,15 +15,15 @@ namespace Client
 {
     public class Client
     {
-        //threads
+        //Многопоточность
         private Thread _tcpThread;
         private Thread _udpThread;
 
-        //data transfer protocols
+        //протоколы передачи данных
         private TcpClient _tcpClient;
         private UdpClient _udpClient;
 
-        //connection (read/write)
+        //подключение (чтение/запись)
         private NetworkStream _stream;
         private BinaryWriter _writer;
         private BinaryReader _reader;
@@ -32,11 +32,11 @@ namespace Client
         //UI
         ClientForm _clientForm;
 
-        //thread management
+        //управление потоками
         private object _encryptLock;
         private object _decryptLock;
 
-        //encryption
+        //шифрование
         Encoding UTF8 = Encoding.UTF8;
         private RSACryptoServiceProvider _RSAProvider;
         private RSAParameters _publicKey;
@@ -54,13 +54,13 @@ namespace Client
             _privateKey = _RSAProvider.ExportParameters(true);
         }
 
-        //CONNECT/DISCONNECT FUNCTIONALITY
+        //ФУНКЦИИ КОННЕКТ/ДИСКОННЕКТ
 
         public bool Connect(string ipAddress, int port)
         {
             try
             {
-                //initiate transfer protocols
+                //инициировать протоколы передачи
                 _tcpClient = new TcpClient();
                 _udpClient = new UdpClient();
                 _tcpClient.Connect(ipAddress, port);
@@ -92,13 +92,13 @@ namespace Client
             }
         }
 
-        //TCP FUNCTIONALITY
+        //ФУНКЦИОНАЛЬНОСТЬ TCP
 
         public void Run()
         {
             _clientForm = new ClientForm(this);
 
-            //start TCP thread for recieving packets
+            //запустите TCP-поток для приема пакетов
             _tcpThread = new Thread(() => { TCPProcessServerResponse(); });
             _tcpThread.Start();
 
@@ -107,7 +107,7 @@ namespace Client
 
             Login();
 
-            _clientForm.ShowDialog(); //show window
+            _clientForm.ShowDialog(); //Окно клиента
         }
 
         private void TCPProcessServerResponse()
@@ -126,37 +126,37 @@ namespace Client
                         case PacketType.CHATMESSAGE:
                             ChatMessagePacket chatMessagePacket = (ChatMessagePacket)receivedPacket;
 
-                            //Write message to client console
+                            //Написать сообщение в клиентскую консоль
                             Console.WriteLine(chatMessagePacket.Time + " " + UTF8.GetString(chatMessagePacket.OriginClient) + ": " + UTF8.GetString(chatMessagePacket.Message));
 
-                            //Write message to client form
+                            //Написать сообщение в клиентскую форму
                             _clientForm.UpdateChatWindow(chatMessagePacket.Time + " " + UTF8.GetString(chatMessagePacket.OriginClient) + ": " + UTF8.GetString(chatMessagePacket.Message));
                             break;
                         case PacketType.PRIVATEMESSAGE:
                             PrivateMessagePacket privateMessagePacket = (PrivateMessagePacket)receivedPacket;
 
-                            //Write pm to client console
+                            //Запись pm в клиентскую консоль
                             Console.WriteLine(privateMessagePacket.Time + " [PM] " + UTF8.GetString(privateMessagePacket.OriginClient) + " -> " + UTF8.GetString(privateMessagePacket.PrivateMessage));
 
-                            //Write message to client form
+                            //Написать сообщение в клиентскую форму
                             _clientForm.UpdateChatWindow(privateMessagePacket.Time + " [PM] " + UTF8.GetString(privateMessagePacket.OriginClient) + " -> " + UTF8.GetString(privateMessagePacket.PrivateMessage));
                             break;
                         case PacketType.SERVERMESSAGE:
                             ServerMessagePacket serverMessagePacket = (ServerMessagePacket)receivedPacket;
 
-                            //Write server response to client console
+                            //Записать ответ сервера в клиентскую консоль
                             Console.WriteLine(serverMessagePacket.Time + " [Server] -> " + UTF8.GetString(serverMessagePacket.Message));
 
-                            //Write server response to client form
+                            //Написать ответ сервера в клиентскую форму
                             _clientForm.UpdateChatWindow(serverMessagePacket.Time + " [Server] -> " + UTF8.GetString(serverMessagePacket.Message));
                             break;
                         case PacketType.ANNOUNCEMESSAGE:
                             AnnouncementMessagePacket announcementMessagePacket = (AnnouncementMessagePacket)receivedPacket;
 
-                            //Write announcement to client console
+                            //Записать объявление в клиентскую консоль
                             Console.WriteLine(announcementMessagePacket.Time + " " + "[Announcement] -> " + UTF8.GetString(announcementMessagePacket.Message));
 
-                            //Write announcement to client form
+                            //Написать объявление в клиентскую форму
                             _clientForm.UpdateChatWindow(announcementMessagePacket.Time + " " + "[Announcement] -> " + UTF8.GetString(announcementMessagePacket.Message));
                             break;
                         case PacketType.SERVERKEY:
@@ -183,24 +183,24 @@ namespace Client
         {
             if (_tcpClient.Connected)
             {
-                //checks if message is a command
+                //проверяет, является ли сообщение командой
                 if (!message.StartsWith("/"))
                 {
-                    //create message packet
+                    //создать пакет сообщений
                     ChatMessagePacket packet = new ChatMessagePacket(EncryptString("Default"), EncryptString(message));
 
-                    //serialize and send packet to all clients
+                    //сериализовать и отправить пакет всем клиентам
                     TCPSerialize(packet);
                 }
                 else
                 {
-                    //creates command message packet
+                    //создает пакет командных сообщений
                     CommandMessagePacket packet = new CommandMessagePacket(EncryptString(message));
 
-                    //send message to client console
+                    //отправить сообщение на клиентскую консоль
                     Console.WriteLine(message);
 
-                    //serialize and send packet to all clients
+                    //сериализовать и отправить пакет всем клиентам
                     TCPSerialize(packet);
                 }
             }
@@ -257,10 +257,10 @@ namespace Client
             _writer.Flush();
         }
 
-        //UDP FUNCTIONALITY
+        //ФУНКЦИОНАЛЬНОСТЬ /UDP
         public void UDPSendMessage(Packet packet, bool encrypted)
         {
-            //serialize and send packet
+            //сериализовать и отправить пакет
             UDPSerialize(packet, encrypted);
         }
 
@@ -329,30 +329,30 @@ namespace Client
                 TCPSerialize(clientNamePacket);
                 return;
             }
-            
-            //check if it is too over 10 characters
-            if(nickname.Length > 11)
+
+            //проверьте, не слишком ли это больше 10 символов
+            if (nickname.Length > 11)
             {
-                _clientForm.UpdateChatWindow("[Error] Your nickname cannot be longer than 11 characters!");
+                _clientForm.UpdateChatWindow("[Error] Ваш ник не может быть длиннее 11 символов!");
                 _clientForm.Nickname.Focus();
             }
 
-            //check if it has spaces
+        
             if(nickname.Contains(" "))
             {
-                _clientForm.UpdateChatWindow("[Error] Your nickname cannot have spaces!");
+                _clientForm.UpdateChatWindow("[Error] В вашем нике не должно быть пробелов!");
                 _clientForm.Nickname.Focus();
             }
 
-            //check if nickname is too small or not inputted
-            if(nickname.Length < 3 && nickname != "")
+            //проверьте, есть ли в нем пробелы
+            if (nickname.Length < 3 && nickname != "")
             {
-                _clientForm.UpdateChatWindow("[Error] Your nickname must be atleast 3 characters long!");
+                _clientForm.UpdateChatWindow("[Error] Ваш ник должен состоять не менее чем из 3 символов!");
                 _clientForm.Nickname.Focus();
             }
             else if(nickname == "")
             {
-                _clientForm.UpdateChatWindow("[Error] Please enter a nickname!");
+                _clientForm.UpdateChatWindow("[Error] Пожалуйста, введите ник!");
                 _clientForm.Nickname.Focus();
             }
 
@@ -361,14 +361,14 @@ namespace Client
 
         private byte[] Encrypt(byte[] data)
         {
-            //encrypt data using the client public key
+            //шифрование данных с использованием открытого ключа клиента
             _RSAProvider.ImportParameters(_serverKey);
             return _RSAProvider.Encrypt(data, true);
         }
 
         private byte[] Decrypt(byte[] data)
         {
-            //decrypt data using the client private key
+            //расшифруйте данные с помощью закрытого ключа клиента
             _RSAProvider.ImportParameters(_privateKey);
             return _RSAProvider.Decrypt(data, true);
         }

@@ -25,29 +25,29 @@ namespace Server
             //setup file log writing
             string filepath = "Server Log - " + DateTime.Now.ToString("dd-MM-yyyy hh-mm tt") + ".txt";
             _logWriter = new StreamWriter(new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.ReadWrite));
-            OutputLog(DateTime.Now + " [Server] -> Server Started!");
-            OutputLog(DateTime.Now + " [Server] -> Server File Logging!");
-            OutputLog(DateTime.Now + " [Server] -> File Path: " + filepath);
+            OutputLog(DateTime.Now + " [Server] -> Стартуем!");
+            OutputLog(DateTime.Now + " [Server] -> Ошибка логинга!");
+            OutputLog(DateTime.Now + " [Server] -> Путь к файлу: " + filepath);
 
             //setup connections
             IPAddress ip = IPAddress.Parse(ipAddress);
             _tcpListener = new TcpListener(ip, port);
             _udpListener = new UdpClient(port);
-            OutputLog(DateTime.Now + " [Server] -> Connection Protocols Setup!");
+            OutputLog(DateTime.Now + " [Server] -> Настройка протоколов подключения!");
 
             //encryptions
             _binaryFormatter = new BinaryFormatter();
-            OutputLog(DateTime.Now + " [Server] -> Encryption Device Setup!");
+            OutputLog(DateTime.Now + " [Server] -> Настройка устройства шифрования!");
         }
 
         public void Start()
         {
             _clients = new ConcurrentDictionary<int, Client>();
             _tcpListener.Start();
-            OutputLog(DateTime.Now + " [Server] -> TCP Listener Started!");
+            OutputLog(DateTime.Now + " [Server] -> Запущен TCP!");
             //blocking function waiting for socket
 
-            OutputLog(DateTime.Now + " [Server] -> Main Server Loop Started!");
+            OutputLog(DateTime.Now + " [Server] -> Запущен цикл Главного Сервера!");
             while (true)
             {
                 try
@@ -60,7 +60,7 @@ namespace Server
                     Client clientInstance = new Client(socket, "Client" + ++clientIndex);
                     _clients.TryAdd(index, clientInstance);
 
-                    OutputLog(DateTime.Now + " [Server] -> " + clientInstance.clientData.clientNickname + " has joined the server!");
+                    OutputLog(DateTime.Now + " [Server] -> " + clientInstance.clientData.clientNickname + " Зашёл на сервер!");
                     
                     //start tcp packet interpreter
                     Thread tcpThread = new Thread(() => { TCPClientMethod(index); });
@@ -149,7 +149,7 @@ namespace Server
 
                             if(uniqueName)
                             {
-                                OutputLog("[Nickname] " + _clients[index].clientData.clientNickname + " has changed their nickname to " + UTF8.GetString(clientNamePacket.ClientName) + ".");
+                                OutputLog("[Nickname] " + _clients[index].clientData.clientNickname + " Изменил ник на: " + UTF8.GetString(clientNamePacket.ClientName) + ".");
                                 _clients[index].clientData.clientNickname = UTF8.GetString(clientNamePacket.ClientName);
 
                                 //Refresh client list
@@ -157,7 +157,7 @@ namespace Server
                                 TCPSendPacketToAll(clientListPacket);
 
                                 //Send name change confirmation
-                                ServerMessagePacket serverMessagePacket = new ServerMessagePacket(UTF8.GetBytes("Your server nickname has been changed to " + UTF8.GetString(clientNamePacket.ClientName) + "!"));
+                                ServerMessagePacket serverMessagePacket = new ServerMessagePacket(UTF8.GetBytes("Ваш ник на сервере изменён на: " + UTF8.GetString(clientNamePacket.ClientName) + "!"));
                                 _clients[index].TCPSend(serverMessagePacket);
                             }
                             else
@@ -341,7 +341,7 @@ namespace Server
                         //check if there is a message
                         if(parameters[2] == null)
                         {
-                            ServerMessagePacket serverMessagePacket1 = new ServerMessagePacket(UTF8.GetBytes("Please put a message after the nickname!"));
+                            ServerMessagePacket serverMessagePacket1 = new ServerMessagePacket(UTF8.GetBytes("Пожалуйста, поставьте сообщение после псевдонима!"));
                             client.TCPSend(serverMessagePacket1);
                         }
                         //check if client was found with name
@@ -360,18 +360,18 @@ namespace Server
                         }
                         else if (clientDestination == -1)
                         {
-                            ServerMessagePacket serverMessagePacket2 = new ServerMessagePacket(UTF8.GetBytes("Sorry that client does not exist. Please try again with a real nickname!"));
+                            ServerMessagePacket serverMessagePacket2 = new ServerMessagePacket(UTF8.GetBytes("Извините, что клиент не существует. Пожалуйста, попробуйте еще раз с настоящим ником!"));
                             client.TCPSend(serverMessagePacket2);
                         }
                         else if (clientDestination == -2)
                         {
-                            ServerMessagePacket serverMessagePacket3 = new ServerMessagePacket(UTF8.GetBytes("You can't send private messages to yourself silly!"));
+                            ServerMessagePacket serverMessagePacket3 = new ServerMessagePacket(UTF8.GetBytes("Ты не можешь отправлять личные сообщения самому себе додик...!"));
                             client.TCPSend(serverMessagePacket3);
                         }
                         break;
 
                     case "HELP":
-                        ServerMessagePacket serverMessagePacket4 = new ServerMessagePacket(UTF8.GetBytes("\nCommands: \n/HELLO - Hello! \n/PM [NAME] [MSG] - Send private messages! \n/ROLLDICE [NumOfDices] [NumOfFaces] - Roll dice! \n/ANNOUNCE [MSG] - Send an announcement message to everyone on the server!"));
+                        ServerMessagePacket serverMessagePacket4 = new ServerMessagePacket(UTF8.GetBytes("\nCommands: \n/HELLO - Кулити! \n/PM [NAME] [MSG] - Отправка приват сообщения! \n/ROLLDICE [NumOfDices] [NumOfFaces] - Бросок костей! \n/ANNOUNCE [MSG] - Скинуть анонс всем на сервере!"));
                         client.TCPSend(serverMessagePacket4);
                         break;
 
@@ -383,8 +383,8 @@ namespace Server
                         }
                         else
                         {
-                            serverMessagePacket5 = new ServerMessagePacket(UTF8.GetBytes("Please input a value for all parameters!"));
-                            OutputLog(client.clientData.clientNickname + " has tried to roll dice without the correct number of parameters! (" + command + ")");
+                            serverMessagePacket5 = new ServerMessagePacket(UTF8.GetBytes("Пожалуйста, введите значение для всех параметров!"));
+                            OutputLog(client.clientData.clientNickname + " Пытался бросить кости без правильного количества параметров! (" + command + ")");
                         }
                         client.TCPSend(serverMessagePacket5);
                         break;
@@ -406,7 +406,7 @@ namespace Server
                         client.TCPSend(chatMessagePacket);
 
                         //send server reponse
-                        serverMessagePacket = new ServerMessagePacket(UTF8.GetBytes("Sorry that is not a command! For a list of commands type '/help'."));
+                        serverMessagePacket = new ServerMessagePacket(UTF8.GetBytes("Извините, это не команда! Для получения списка команд введите '/help'."));
                         client.TCPSend(serverMessagePacket);
                         break;
                 }
@@ -472,14 +472,14 @@ namespace Server
             try
             {
                 if (numOfDice < 1)
-                    return "There must be atleast 1 dice to roll!";
+                    return "Для броска должна быть как минимум 1 игральная кость!";
                 else if (numOfDice > 10)
-                    return "You can't roll more than 10 dice at the same time!";
+                    return "Вы не можете бросить более 10 кубиков одновременно!";
 
                 if (numOfSides < 6)
-                    return "The dice must have atleast 6 sides!";
+                    return "У кубика должно быть не менее 6 сторон!";
                 else if (numOfSides > 120)
-                    return "The dice can't have more sides then 120!";
+                    return "У кости не может быть больше сторон, чем 120!";
 
                 var rand = new Random();
                 int[] nums = new int[numOfDice];
@@ -493,11 +493,11 @@ namespace Server
                     diceNumString += " [" + nums[i] + "]";
                 }
 
-                return "The numbers of your die were" + diceNumString + ". They have a sum of " + sum + ".";
+                return "Номера вашего кубика были" + diceNumString + ". У них есть сумма " + sum + ".";
             }
             catch(Exception)
             {
-                return "Please input a value for all parameters!";
+                return "Пожалуйста, введите значение для всех параметров!";
             }
         }
 

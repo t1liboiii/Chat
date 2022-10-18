@@ -19,7 +19,7 @@ namespace Client
             }
             else
             {
-                Console.WriteLine("Failed to connect to the server!");
+                Console.WriteLine("Ошибка подключения к серверу");
             }
         }
     }

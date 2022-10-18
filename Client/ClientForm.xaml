@@ -9,13 +9,15 @@
         Background="#36393F"
         WindowStyle="None"
         AllowsTransparency="True"
+        
         ResizeMode="CanResizeWithGrip">
 
 
-    <Grid>
+    <Grid
+         MouseDown="Drag">
 
 
-
+         
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -41,14 +43,8 @@
                             BorderThickness="0"
                             Foreground="Gray"
                             FontWeight="Bold"
-                            Margin="0,0,0,5"
-                           />
-                    <Button Width="20" Height="20"
-                            Content="□"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Foreground="Gray"
-                            FontWeight="Bold"
+                           Click="Button_Click_1"
+                            Margin="0,0,0,5" 
                            />
 
                     <Button Width="20" Height="20"
@@ -84,26 +80,6 @@
                       Foreground="Wheat"
                       Grid.Row="1"
                      />
-
-            <StackPanel Grid.Row="2"
-                        Orientation="Horizontal"
-                        Background="#292b2F">
-                <Border CornerRadius="25"
-                        Width="30" Height="30"
-                        Background="#3bff6f"
-                        Margin="18,0,0,0"/>
-                <StackPanel VerticalAlignment="Center">
-                    <Label Content="Username"
-                           Foreground="White"
-                           FontWeight="SemiBold"
-                           Margin="0, -5, 0, -5"/>
-                    <Label Content ="Custom Status"
-                           Foreground="Gray"
-                           FontWeight="SemiBold"
-                           FontSize="10"
-                           Margin="0, -8, 0, -5"/>
-                </StackPanel>
-            </StackPanel>
         </Grid>
 
         <Grid Grid.Column="1"
@@ -122,7 +98,7 @@
 
                     <TextBox  x:Name="Nickname" 
                            Foreground="White"
-                            
+                            PreviewKeyDown="Nickname_PreviewKeyDown"
                            FontWeight="Bold"
                                 Background="#FF484848"
                            Margin="256,0,5,0"
@@ -154,7 +130,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox
-                   
+                   PreviewKeyDown="InputField_PreviewKeyDown"
                     x:Name="InputField"
                    
                     
