@@ -193,7 +193,7 @@ namespace Server
                                 _clients[index].successfulLogin = true;
 
                                 //Announce client has joined to all clients
-                                ServerMessagePacket serverMessagePacket2 = new ServerMessagePacket(UTF8.GetBytes(_clients[index].clientData.clientNickname + " has joined the server!"));
+                                ServerMessagePacket serverMessagePacket2 = new ServerMessagePacket(UTF8.GetBytes(_clients[index].clientData.clientNickname + " Зашёл на сервер!"));
                                 TCPSendPacketToAll(serverMessagePacket2);
 
                                 //Refresh client list
